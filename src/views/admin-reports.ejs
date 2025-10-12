@@ -1,0 +1,138 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Reports</title>
+</head>
+<body>
+  <h1>Reports & Statistics</h1>
+  <p><b>Total Requests:</b> <%= total %></p>
+  <p><b>Approved:</b> <%= approved %></p>
+  <p><b>Rejected:</b> <%= rejected %></p>
+  <p><b>Total Money Collected:</b> $<%= payments %></p>
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Reports</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .charts { display: flex; flex-wrap: wrap; gap: 30px; }
+    .chart-box { flex: 1; min-width: 400px; }
+    h1, h2 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Admin Reports</h1>
+
+  <div>
+    <p><strong>Total Requests:</strong> <%= total %></p>
+    <p><strong>Approved:</strong> <%= approved %></p>
+    <p><strong>Rejected:</strong> <%= rejected %></p>
+    <p><strong>Total Payments:</strong> $<%= payments %></p>
+  </div>
+
+  <div class="charts">
+    <!-- Requests Bar Chart -->
+    <div class="chart-box">
+      <h2>Requests Overview</h2>
+      <canvas id="requestsChart"></canvas>
+    </div>
+
+    <!-- Departments Chart -->
+    <div class="chart-box">
+      <h2>Requests per Department</h2>
+      <canvas id="deptChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ✅ Server data injected safely -->
+  <script id="server-data" type="application/json">
+    <%- JSON.stringify({
+      total: total || 0,
+      approved: approved || 0,
+      rejected: rejected || 0,
+      requestsPerDept: requestsPerDept || []
+    }).replace(/<\/script>/g, '<\\/script>') %>
+  </script>
+
+  <script>
+    // Parse server data
+    const serverData = JSON.parse(document.getElementById('server-data').textContent || '{}');
+    const totalRequests = serverData.total || 0;
+    const approvedRequests = serverData.approved || 0;
+    const rejectedRequests = serverData.rejected || 0;
+    const deptDataRaw = Array.isArray(serverData.requestsPerDept) ? serverData.requestsPerDept : [];
+
+    const deptLabels = deptDataRaw.map(r => r.department || "");
+    const deptData = deptDataRaw.map(r => Number(r.total_requests) || 0);
+
+    // ==========================
+    // 📊 Chart 1: Requests Overview (Bar)
+    // ==========================
+    const ctxRequests = document.getElementById("requestsChart").getContext("2d");
+    new Chart(ctxRequests, {
+      type: "bar",
+      data: {
+        labels: ["Approved", "Rejected", "Pending"],
+        datasets: [{
+          label: "Requests",
+          data: [
+            approvedRequests,
+            rejectedRequests,
+            totalRequests - approvedRequests - rejectedRequests
+          ],
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",   // Approved
+            "rgba(255, 99, 132, 0.6)",   // Rejected
+            "rgba(255, 206, 86, 0.6)"    // Pending
+          ],
+          borderColor: [
+            "rgba(75, 192, 192, 1)",
+            "rgba(255, 99, 132, 1)",
+            "rgba(255, 206, 86, 1)"
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // ==========================
+    // 📊 Chart 2: Requests per Department (Bar)
+    // ==========================
+    const ctxDept = document.getElementById("deptChart").getContext("2d");
+    new Chart(ctxDept, {
+      type: "bar",
+      data: {
+        labels: deptLabels,
+        datasets: [{
+          label: "Total Requests",
+          data: deptData,
+          backgroundColor: "rgba(54, 162, 235, 0.6)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+

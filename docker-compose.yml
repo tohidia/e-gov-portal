@@ -1,0 +1,106 @@
+
+
+# version: "3.8"
+# services:
+#   app:
+#     build: .
+#     ports:
+#       - "5000:5000"
+#     volumes:
+#       - .:/app                    # mount سورس برای توسعه
+#       - /app/node_modules         # جلوگیری از overwrite node_modules
+#       - ./uploads:/app/uploads    # ذخیره آپلودها بیرون از container
+#     env_file:
+#       - .env
+#     environment:
+#       NODE_ENV: "development"
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     command: ["./wait-for-db.sh", "db:5432", "--", "npm", "run", "dev"] 
+#     # npm run dev باید داخل package.json اسکریپت nodemon را اجرا کند
+#   db:
+#     image: postgres:14
+#     restart: always
+#     environment:
+#       POSTGRES_USER: ${POSTGRES_USER:-admin}
+#       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+#       POSTGRES_DB: ${POSTGRES_DB:-egov_portal}
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+#     ports:
+#       - "5432:5432"
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+#       interval: 5s
+#       timeout: 5s
+#       retries: 10
+
+#   pgadmin:
+#     image: dpage/pgadmin4
+#     restart: unless-stopped
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@example.com}
+#       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - pgadmin_data:/var/lib/pgadmin
+
+# volumes:
+#   db_data:
+#   pgadmin_data:
+
+
+
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./uploads:/app/uploads
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: "development"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["./wait-for-db.sh", "db:5432", "--", "npm", "run", "dev"]
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: faiza
+      POSTGRES_PASSWORD: test123
+      POSTGRES_DB: egov_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U faiza -d egov_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  db_data:
+  pgadmin_data:
+

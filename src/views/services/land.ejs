@@ -1,0 +1,97 @@
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loan Request - E-Gov Portal</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="navbar">
+    <h2 class="logo">E-Gov Portal</h2>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services">Services</a>
+    </nav>
+  </header>
+
+  <section class="form-section">
+    <h1>Loan Request Application</h1>
+    <form action="/services/lend" method="POST">
+      <label for="fullname">Full Name:</label>
+      <input type="text" id="fullname" name="fullname" required>
+
+      <label for="amount">Requested Loan Amount:</label>
+      <input type="number" id="amount" name="amount" min="100" required>
+
+      <label for="duration">Repayment Duration (months):</label>
+      <input type="number" id="duration" name="duration" min="1" required>
+
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" required>
+
+      <button type="submit">Submit Request</button>
+    </form>
+  </section>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loan Request - E-Gov Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-green-700 text-white shadow-md">
+    <div class="max-w-5xl mx-auto flex justify-between items-center p-4">
+      <h2 class="text-xl font-bold">E-Gov Portal</h2>
+      <nav class="space-x-4">
+        <a href="/" class="hover:underline">Home</a>
+        <a href="/services" class="hover:underline">Services</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Form Section -->
+  <section class="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-xl shadow-lg">
+    <h1 class="text-2xl font-semibold mb-6 text-gray-800">Loan Request Application</h1>
+    <form action="/services/lend" method="POST" class="space-y-5">
+      
+      <div>
+        <label for="fullname" class="block text-gray-700 mb-1">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" required 
+               class="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+      </div>
+
+      <div>
+        <label for="amount" class="block text-gray-700 mb-1">Requested Loan Amount:</label>
+        <input type="number" id="amount" name="amount" min="100" required 
+               class="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+      </div>
+
+      <div>
+        <label for="duration" class="block text-gray-700 mb-1">Repayment Duration (months):</label>
+        <input type="number" id="duration" name="duration" min="1" required 
+               class="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+      </div>
+
+      <div>
+        <label for="email" class="block text-gray-700 mb-1">Email Address:</label>
+        <input type="email" id="email" name="email" required 
+               class="w-full border border-gray-300 p-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+      </div>
+
+      <button type="submit" 
+              class="w-full bg-green-600 text-white py-2 rounded-lg shadow-md hover:bg-green-700 transition">
+        Submit Request
+      </button>
+    </form>
+  </section>
+</body>
+</html>

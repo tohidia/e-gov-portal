@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+</head>
+<body>
+  <h1>Pay for <%= payment.service_name %></h1>
+  <p>Amount: $<%= payment.amount %></p>
+  <p>Status: <%= payment.status %></p>
+
+  <% if (payment.status === 'pending') { %>
+    <form method="POST" action="/payments/pay/<%= requestId %>">
+      <button type="submit">Pay Now</button>
+    </form>
+  <% } else { %>
+    <p>Already Paid ✅</p>
+  <% } %>
+</body>
+</html>

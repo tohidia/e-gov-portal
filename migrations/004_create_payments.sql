@@ -1,0 +1,7 @@
+CREATE TABLE payments (
+  id SERIAL PRIMARY KEY,
+  request_id INT NOT NULL,
+  amount NUMERIC(10,2) NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Officer - Request Detail</title>
+</head>
+<body>
+  <h1>Request #<%= request.id %></h1>
+  <p><b>Citizen:</b> <%= request.citizen_name %></p>
+  <p><b>Service:</b> <%= request.service_name %></p>
+  <p><b>Status:</b> <%= request.status %></p>
+  <p><b>Decision Note:</b> <%= request.decision_note || "Not reviewed yet" %></p>
+
+  <form method="POST" action="/officer/requests/<%= request.id %>/decision">
+    <label>Decision:</label>
+    <select name="decision" required>
+      <option value="approved">Approve</option>
+      <option value="rejected">Reject</option>
+    </select>
+    <br><br>
+    <label>Note:</label>
+    <textarea name="note"></textarea>
+    <br><br>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

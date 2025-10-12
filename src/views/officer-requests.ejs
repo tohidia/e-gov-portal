@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Officer - Requests</title>
+</head>
+<body>
+  <h1>Requests for Review</h1>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Citizen</th>
+      <th>Service</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+    <% requests.forEach(r => { %>
+      <tr>
+        <td><%= r.id %></td>
+        <td><%= r.citizen_name %></td>
+        <td><%= r.service_name %></td>
+        <td><%= r.status %></td>
+        <td><%= r.created_at.toDateString() %></td>
+        <td><a href="/officer/requests/<%= r.id %>">Review</a></td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>

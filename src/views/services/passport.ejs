@@ -1,0 +1,158 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Passport Renewal - E-Gov Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+      <h2 class="text-2xl font-bold tracking-wide">E-Gov Portal</h2>
+      <nav class="hidden md:flex space-x-6">
+        <a href="/" class="hover:text-yellow-300 transition">Home</a>
+        <a href="/services" class="hover:text-yellow-300 transition">Services</a>
+        <a href="/about" class="hover:text-yellow-300 transition">About</a>
+        <a href="/contact" class="hover:text-yellow-300 transition">Contact</a>
+      </nav>
+      <button id="menu-btn" class="md:hidden text-2xl focus:outline-none">☰</button>
+    </div>
+  </header>
+
+  <!-- Form Section -->
+  <section class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg mt-12 p-8 fade-up relative">
+    <h1 class="text-3xl font-bold text-center text-indigo-700 mb-6">Passport Renewal Application</h1>
+    
+    <!-- Success/Error Message -->
+    <div id="formMessage" class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-md text-center p-4 rounded-lg text-white opacity-0 transition-all duration-500"></div>
+
+    <form id="passportForm" class="space-y-6">
+
+      <div>
+        <label for="fullname" class="block mb-2 font-semibold">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" required 
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <p class="text-red-500 text-sm mt-1 hidden" id="fullnameError">Please enter your full name.</p>
+      </div>
+
+      <div>
+        <label for="dob" class="block mb-2 font-semibold">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required 
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <p class="text-red-500 text-sm mt-1 hidden" id="dobError">Please enter a valid date of birth.</p>
+      </div>
+
+      <div>
+        <label for="passportNumber" class="block mb-2 font-semibold">Passport Number:</label>
+        <input type="text" id="passportNumber" name="passportNumber" required 
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <p class="text-red-500 text-sm mt-1 hidden" id="passportError">Passport number must be 6-9 characters.</p>
+      </div>
+
+      <div>
+        <label for="email" class="block mb-2 font-semibold">Email Address:</label>
+        <input type="email" id="email" name="email" required 
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <p class="text-red-500 text-sm mt-1 hidden" id="emailError">Please enter a valid email address.</p>
+      </div>
+
+      <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-3 rounded-xl shadow-lg transition transform hover:scale-105 flex justify-center items-center">
+        <span id="btnText">Submit Application</span>
+        <svg id="loader" class="animate-spin ml-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+      </button>
+
+    </form>
+  </section>
+
+  <footer class="bg-indigo-700 text-white text-center py-6 mt-12">
+    <p>© 2025 E-Gov Portal. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('passportForm');
+    const messageDiv = document.getElementById('formMessage');
+    const submitBtn = document.getElementById('submitBtn');
+    const loader = document.getElementById('loader');
+    const btnText = document.getElementById('btnText');
+
+    function showMessage(text, type) {
+      messageDiv.textContent = text;
+      messageDiv.className = `absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-md text-center p-4 rounded-lg text-white transition-all duration-500`;
+      messageDiv.style.opacity = '1';
+      messageDiv.style.top = '1rem';
+      messageDiv.style.backgroundColor = type === 'success' ? '#16a34a' : '#dc2626';
+
+      // بعد از ۳ ثانیه fade-out
+      setTimeout(() => {
+        messageDiv.style.opacity = '0';
+        messageDiv.style.top = '0';
+      }, 3000);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const dob = document.getElementById('dob').value;
+      const passportNumber = document.getElementById('passportNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      document.getElementById('fullnameError').classList.add('hidden');
+      document.getElementById('dobError').classList.add('hidden');
+      document.getElementById('passportError').classList.add('hidden');
+      document.getElementById('emailError').classList.add('hidden');
+
+      let isValid = true;
+      if(fullname === '') { document.getElementById('fullnameError').classList.remove('hidden'); isValid = false; }
+      if(dob === '') { document.getElementById('dobError').classList.remove('hidden'); isValid = false; }
+      if(passportNumber.length < 6 || passportNumber.length > 9) { document.getElementById('passportError').classList.remove('hidden'); isValid = false; }
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if(!email.match(emailPattern)) { document.getElementById('emailError').classList.remove('hidden'); isValid = false; }
+
+      if(isValid) {
+        loader.classList.remove('hidden');
+        btnText.textContent = 'Submitting...';
+        submitBtn.disabled = true;
+
+        // شبیه‌سازی ارسال فرم
+        fetch('/services/passport', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullname, dob, passportNumber, email })
+        })
+        .then(res => res.ok ? res.json() : Promise.reject('Server error'))
+        .then(data => {
+          showMessage('Application submitted successfully!', 'success');
+          form.reset();
+        })
+        .catch(err => {
+          showMessage('Error submitting form. Please try again.', 'error');
+        })
+        .finally(() => {
+          loader.classList.add('hidden');
+          btnText.textContent = 'Submit Application';
+          submitBtn.disabled = false;
+        });
+      }
+    });
+  </script>
+
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeInUp 0.8s ease forwards; }
+  </style>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Land Registration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-5">
+  <h2>Apply for Land Registration</h2>
+  <form action="/services/lend" method="POST" class="mt-3">
+    <div class="mb-3">
+      <label for="citizenId" class="form-label">Citizen ID</label>
+      <input type="text" id="citizenId" name="citizenId" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="serviceType" class="form-label">Service Type</label>
+      <input type="text" id="serviceType" name="serviceType" value="Land Registration" class="form-control" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label for="details" class="form-label">Details</label>
+      <textarea id="details" name="details" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Request</button>
+  </form>
+</body>
+</html>

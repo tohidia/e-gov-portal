@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Citizen Dashboard - E-Gov Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .card-hover {
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans bg-gradient-to-br from-blue-200/70 via-teal-200/60 to-green-200/70">
+
+  <!-- NAVBAR -->
+  <header class="bg-white/40 backdrop-blur-md shadow-lg sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-5">
+      <h1 class="text-xl font-bold text-gray-800">E-Gov Portal</h1>
+      <nav class="flex items-center gap-6 text-gray-700 font-medium">
+        <a href="/" class="hover:text-teal-600">Home</a>
+        <a href="/services" class="hover:text-teal-600">Services</a>
+        <a href="/contact" class="hover:text-teal-600">Contact</a>
+        <a href="/about" class="hover:text-teal-600">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="flex-grow max-w-7xl mx-auto p-8">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+      <div>
+        <h2 class="text-4xl font-extrabold text-gray-800 drop-shadow-sm">Your Requests</h2>
+        <p class="text-lg text-gray-600">Track and manage your applications easily</p>
+      </div>
+
+      <a href="/services/apply" 
+         class="px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow-lg hover:scale-105 transition-transform">
+        + Apply New Service
+      </a>
+    </div>
+
+    <!-- Requests Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% requests.forEach(function(r) { %>
+        <article class="card-hover bg-white/40 backdrop-blur-xl p-8 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1">
+          <div class="flex justify-between items-start mb-5">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-800"><%= r.serviceName %></h3>
+              <p class="text-sm text-gray-500 mt-1">ID: #<%= r.id %></p>
+            </div>
+            <div>
+              <% if (r.status === 'Approved') { %>
+                <span class="px-4 py-1 rounded-full bg-green-100 text-green-700 font-semibold">Approved</span>
+              <% } else if (r.status === 'Rejected') { %>
+                <span class="px-4 py-1 rounded-full bg-red-100 text-red-700 font-semibold">Rejected</span>
+              <% } else { %>
+                <span class="px-4 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold">Under Review</span>
+              <% } %>
+            </div>
+          </div>
+
+          <p class="text-gray-600 mb-4">Submitted: 
+            <span class="font-medium text-gray-800"><%= r.date %></span>
+          </p>
+
+          <!-- Progress bar -->
+          <div class="mb-6">
+            <% if (r.status === 'Under Review') { %>
+              <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div class="h-3 bg-yellow-400 rounded-full" style="width:40%"></div>
+              </div>
+            <% } else if (r.status === 'Approved') { %>
+              <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div class="h-3 bg-green-500 rounded-full" style="width:100%"></div>
+              </div>
+            <% } else { %>
+              <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div class="h-3 bg-red-400 rounded-full" style="width:20%"></div>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex justify-between items-center">
+            <a href="/requests/<%= r.id %>" class="text-teal-700 hover:underline font-medium">View Details</a>
+            <% if (r.status === 'Under Review') { %>
+              <button disabled class="px-4 py-2 rounded-lg bg-gray-200 text-gray-500 cursor-not-allowed">Waiting</button>
+            <% } else { %>
+              <a href="/requests/<%= r.id %>/track" 
+                 class="px-4 py-2 rounded-lg bg-gradient-to-r from-teal-500 to-blue-500 text-white shadow hover:scale-105 transition">
+                Track
+              </a>
+            <% } %>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </main>
+</body>
+</html>

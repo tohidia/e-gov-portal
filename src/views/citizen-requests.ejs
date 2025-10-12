@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Requests</title>
+</head>
+<body>
+  <h1>My Service Requests</h1>
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Service</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+    <% requests.forEach(req => { %>
+      <tr>
+        <td><%= req.id %></td>
+        <td><%= req.service_name %></td>
+        <td><%= req.status %></td>
+        <td><%= req.created_at.toDateString() %></td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>

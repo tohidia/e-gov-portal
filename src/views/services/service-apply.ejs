@@ -1,0 +1,132 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Apply for a Service</title>
+</head>
+<body>
+  <h1>Apply for a Service</h1>
+  <form action="/services/apply" method="POST">
+    <label for="service">Choose Service:</label>
+    <select name="service_id" id="service" required>
+      <% services.forEach(service => { %>
+        <option value="<%= service.id %>">
+          <%= service.name %> (Fee: $<%= service.fee %>)
+        </option>
+      <% }) %>
+    </select>
+    <br><br>
+    <button type="submit">Submit Request</button>
+  </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply for a Service - E-Gov Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .card-hover {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-teal-100 to-green-100 font-sans flex flex-col">
+
+  <!-- NAVBAR -->
+  <header class="bg-white/50 backdrop-blur-md shadow sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-5">
+      <h1 class="text-xl font-bold text-gray-800">E-Gov Portal</h1>
+      <nav class="flex items-center gap-6 text-gray-700 font-medium">
+        <a href="/" class="hover:text-teal-600">Home</a>
+        <a href="/services" class="hover:text-teal-600">Services</a>
+        <a href="/contact" class="hover:text-teal-600">Contact</a>
+        <a href="/about" class="hover:text-teal-600">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow flex justify-center items-start p-8">
+    <div class="bg-white/50 backdrop-blur-xl shadow-xl rounded-2xl p-10 w-full max-w-lg card-hover">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Apply for a Service</h2>
+      
+      <!-- Display error or success messages -->
+      <% if (typeof error !== 'undefined') { %>
+        <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+          <%= error %>
+        </div>
+      <% } %>
+      <% if (typeof success !== 'undefined') { %>
+        <div class="bg-green-100 text-green-700 px-4 py-3 rounded mb-4">
+          <%= success %>
+        </div>
+      <% } %>
+
+      <form action="/services/apply" method="POST" class="flex flex-col gap-6">
+
+        <!-- Service Selection -->
+        <div class="flex flex-col gap-2">
+          <label for="service_id" class="font-semibold text-gray-700">Choose a Service</label>
+          <select name="service_id" id="service_id" required
+            class="px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-400 focus:outline-none">
+            <% if (services && services.length > 0) { %>
+              <% services.forEach(service => { %>
+                <option value="<%= service.id %>">
+                  <%= service.name %> (Fee: $<%= service.fee %>)
+                </option>
+              <% }) %>
+            <% } else { %>
+              <option disabled>No services available</option>
+            <% } %>
+          </select>
+        </div>
+
+        <!-- Applicant Name -->
+        <div class="flex flex-col gap-2">
+          <label for="applicant_name" class="font-semibold text-gray-700">Full Name</label>
+          <input type="text" name="applicant_name" id="applicant_name" required
+            placeholder="Enter your full name"
+            class="px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-400 focus:outline-none" />
+        </div>
+
+        <!-- Applicant Email -->
+        <div class="flex flex-col gap-2">
+          <label for="email" class="font-semibold text-gray-700">Email</label>
+          <input type="email" name="email" id="email" required
+            placeholder="Enter your email"
+            class="px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-400 focus:outline-none" />
+        </div>
+
+        <!-- Description -->
+        <div class="flex flex-col gap-2">
+          <label for="description" class="font-semibold text-gray-700">Reason / Description</label>
+          <textarea name="description" id="description" rows="4"
+            placeholder="Describe why you are applying for this service..."
+            class="px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-400 focus:outline-none"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+          class="px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-transform">
+          Submit Request
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white/40 backdrop-blur-md py-4 text-center text-gray-600 text-sm mt-8">
+    © <%= new Date().getFullYear() %> E-Gov Portal. All rights reserved.
+  </footer>
+
+</body>
+</html>
+
