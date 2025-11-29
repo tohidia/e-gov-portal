@@ -1,22 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title><%= title %></title>
-  <script src="https://cdn.tailwindcss.com"></script> 
-  <link href="/style.css" rel="stylesheet"> 
-  <!-- FontAwesome for social icons --> 
- <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- فایل استایل محلی -->
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- FontAwesome (CDN safe for localhost, بدون Kit و بدون CORS) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
   <style> 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .fade-up {
-      opacity: 0;
-      animation: fadeInUp 0.8s ease forwards;
-    }
+    .fade-up { opacity: 0; animation: fadeInUp 0.8s ease forwards; }
     .fade-up-delay-1 { animation-delay: 0.3s; }
     .fade-up-delay-2 { animation-delay: 0.6s; }
     .fade-up-delay-3 { animation-delay: 0.9s; }
@@ -30,8 +32,8 @@
     <div class="container mx-auto flex justify-between items-center py-4 px-6">
       <h2 class="text-2xl font-bold tracking-wide">E-Gov Portal</h2>  
 
-      <!-- Desktop Menu with Tailwind hover effects -->
-       <nav class="hidden md:flex space-x-8">
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex space-x-8">
         <a href="/" class="relative group transition transform hover:scale-105">
           Home
           <span class="absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 via-pink-400 to-blue-400 transition-all duration-300 group-hover:w-full"></span>
@@ -51,7 +53,7 @@
       </nav>  
 
       <!-- Mobile Menu Button -->
-       <button id="menu-btn" class="md:hidden text-2xl focus:outline-none">
+      <button id="menu-btn" class="md:hidden text-2xl focus:outline-none">
         ☰
       </button>
     </div>  
@@ -74,7 +76,7 @@
   </script>  
   
   <!-- Hero Section -->
-   <section class="hero relative bg-gradient-to-r from-indigo-500 to-blue-600 text-white text-center py-32">
+  <section class="hero relative bg-gradient-to-r from-indigo-500 to-blue-600 text-white text-center py-32">
     <div class="absolute inset-0 bg-black opacity-20"></div>
     <div class="relative z-10 max-w-3xl mx-auto px-6 fade-up">
       <h1 class="text-4xl md:text-6xl font-bold mb-6">Welcome to the <%= title %></h1>
@@ -88,11 +90,10 @@
   </section>  
 
   <!-- Services Section -->
-   <section class="services py-16 max-w-7xl mx-auto px-6">
+  <section class="services py-16 max-w-7xl mx-auto px-6">
     <h2 class="text-3xl font-bold text-center text-indigo-700 mb-12 fade-up">Available Services</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"> 
-      <!-- Card examples -->
-       <div class="card bg-white shadow-lg rounded-2xl p-6 text-center hover:scale-105 hover:shadow-2xl transition fade-up fade-up-delay-1">
+      <div class="card bg-white shadow-lg rounded-2xl p-6 text-center hover:scale-105 hover:shadow-2xl transition fade-up fade-up-delay-1">
         <h3 class="text-xl font-semibold text-indigo-600 mb-3">Passport Renewal</h3>
         <p class="text-gray-600 mb-4">Apply for a new passport or renew your existing one online.</p>
         <a href="/services/passport" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition">Apply Now</a>
@@ -116,7 +117,7 @@
   </section>  
 
   <!-- Footer -->
-   <footer class="bg-indigo-700 text-white py-10 mt-10 fade-up">
+  <footer class="bg-indigo-700 text-white py-10 mt-10 fade-up">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left"> 
       <div>
         <h3 class="text-xl font-bold mb-3">E-Gov Portal</h3>
@@ -150,7 +151,5 @@
 
 </body>
 </html>
-
-
 
 

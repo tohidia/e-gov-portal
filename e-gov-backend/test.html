@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test E-Gov API</title>
+</head>
+<body>
+
+<h2>Login</h2>
+<form id="loginForm">
+  Email: <input type="text" id="email" value="user@example.com"><br>
+  Password: <input type="password" id="password" value="123456"><br>
+  <button type="submit">Login</button>
+</form>
+
+<h2>Requests</h2>
+<button id="getRequests">Get Requests</button>
+<pre id="result"></pre>
+
+<script>
+let token = '';
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  const res = await fetch('http://localhost:3000/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+  if(data.token){
+    token = data.token;
+    document.getElementById('result').textContent = 'Login successful! Token received.';
+  } else {
+    document.getElementById('result').textContent = JSON.stringify(data);
+  }
+});
+
+document.getElementById('getRequests').addEventListener('click', async () => {
+  if(!token){
+    alert('Please login first!');
+    return;
+  }
+
+  const res = await fetch('http://localhost:3000/api/requests', {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+
+  const data = await res.json();
+  document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+});
+</script>
+
+</body>
+</html>

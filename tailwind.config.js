@@ -16,8 +16,17 @@
 // };
 
 // tailwind.config.js
+// module.exports = {
+//   content: ["./views/**/*.ejs"],   // این خیلی مهمه
+//   theme: {
+//     extend: {},
+//   },
+//   plugins: [],
+// };
+
+
 module.exports = {
-  content: ["./views/**/*.ejs"],   // این خیلی مهمه
+  content: ["./src/views/**/*.ejs"], // مسیر درست
   theme: {
     extend: {},
   },

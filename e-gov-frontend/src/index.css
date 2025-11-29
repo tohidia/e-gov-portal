@@ -1,0 +1,35 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* استفاده از Tailwind */
+/* body {
+  @apply bg-gray-100 font-sans;
+} */
+
+/* CSS قدیمی */
+/* :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+} */
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: theme('colors.gray.100');
+  font-family: theme('fontFamily.sans');
+} */
+
+
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  @apply bg-gray-100 font-sans;
+}

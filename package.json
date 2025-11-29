@@ -27,10 +27,12 @@
     "express-session": "^1.18.2",
     "knex": "^3.1.0",
     "multer": "^2.0.2",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "react-router-dom": "^7.9.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
+    "caniuse-lite": "^1.0.30001750",
     "nodemon": "^3.1.10",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.13"
