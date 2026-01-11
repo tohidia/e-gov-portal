@@ -1,52 +1,60 @@
 
-
-
 // import express from "express";
 // import dotenv from "dotenv";
 // import cors from "cors";
 // import cookieParser from "cookie-parser";
 // import pool from "./config/db.js";
 
-// // 🧭 Routes
+// // Routes
 // import userRoutes from "./routes/userRoutes.js";
 // import departmentRoutes from "./routes/departmentRoutes.js";
 // import requestRoutes from "./routes/requestRoutes.js";
 // import serviceRoutes from "./routes/serviceRoutes.js";
-// import adminRoutes from "./routes/adminRoutes.js"; // ✅ اضافه شد
-// // import adminRoutes from "./routes/adminRoutes.js";
-// // 🧩 Middleware
+// import adminRoutes from "./routes/adminRoutes.js";
+
 // import { verifyToken } from "./middleware/authMiddleware.js";
 
 // dotenv.config();
 // const app = express();
 
-// // ⚡ CORS Configuration
+// // -------------------------------------------------------------
+// // ✅ CORS Configuration (نسخه درست و کامل)
+// // -------------------------------------------------------------
 // app.use(
 //   cors({
-//     origin: "http://localhost:5173", // آدرس فرانت‌اند
+//     origin: "http://localhost:5173",
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
 //     credentials: true,
-//     allowedHeaders: ["Content-Type", "Authorization"],
 //   })
 // );
 
-// // ✅ ترتیب صحیح middleware‌ها
+// // -------------------------------------------------------------
+// // Middleware
+// // -------------------------------------------------------------
 // app.use(cookieParser());
 // app.use(express.json());
 
-// // 🧩 تست اتصال به دیتابیس
+// // -------------------------------------------------------------
+// // DB Connection Test
+// // -------------------------------------------------------------
 // pool
 //   .connect()
 //   .then(() => console.log("✅ PostgreSQL Connected Successfully"))
 //   .catch((err) => console.error("❌ Database connection error:", err));
 
-// // 🛣️ تعریف مسیرهای API
+// // -------------------------------------------------------------
+// // Routes
+// // -------------------------------------------------------------
 // app.use("/api/users", userRoutes);
 // app.use("/api/departments", departmentRoutes);
 // app.use("/api/requests", requestRoutes);
 // app.use("/api/services", serviceRoutes);
-// app.use("/api/admin", adminRoutes); // ✅ مسیر جدید ادمین
+// app.use("/api/admin", adminRoutes); // ALL ADMIN ROUTES AUTOMATICALLY PROTECTED
 
-// // 🔒 مسیر تست احراز هویت
+// // -------------------------------------------------------------
+// // Protected test route
+// // -------------------------------------------------------------
 // app.get("/api/protected", verifyToken, (req, res) => {
 //   res.json({
 //     message: `Hello ${req.user.role}, you are authenticated ✅`,
@@ -54,20 +62,21 @@
 //   });
 // });
 
-// // ⚠️ مدیریت خطای عمومی
+// // -------------------------------------------------------------
+// // Global Error Handler
+// // -------------------------------------------------------------
 // app.use((err, req, res, next) => {
-//   console.error("❌ Server Error:", err);
+//   console.error("❌ Server Error:", err.stack || err);
 //   res.status(500).json({ error: "Internal server error" });
 // });
 
-// // 🚀 Start server
+// // -------------------------------------------------------------
+// // Start Server
+// // -------------------------------------------------------------
 // const PORT = process.env.PORT || 3000;
 // app.listen(PORT, () =>
 //   console.log(`🚀 Backend running on http://localhost:${PORT}`)
 // );
-
-
-
 
 
 
@@ -84,13 +93,14 @@ import requestRoutes from "./routes/requestRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
+// Middlewares
 import { verifyToken } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 const app = express();
 
 // -------------------------------------------------------------
-// ✅ CORS Configuration (نسخه درست و کامل)
+// CORS Configuration
 // -------------------------------------------------------------
 app.use(
   cors({
@@ -102,13 +112,13 @@ app.use(
 );
 
 // -------------------------------------------------------------
-// Middleware
+// Middlewares
 // -------------------------------------------------------------
-app.use(cookieParser());
 app.use(express.json());
+app.use(cookieParser());
 
 // -------------------------------------------------------------
-// DB Connection Test
+// Test PostgreSQL Connection
 // -------------------------------------------------------------
 pool
   .connect()
@@ -116,13 +126,13 @@ pool
   .catch((err) => console.error("❌ Database connection error:", err));
 
 // -------------------------------------------------------------
-// Routes
+// API Routes
 // -------------------------------------------------------------
 app.use("/api/users", userRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/services", serviceRoutes);
-app.use("/api/admin", adminRoutes); // ALL ADMIN ROUTES AUTOMATICALLY PROTECTED
+app.use("/api/admin", adminRoutes);
 
 // -------------------------------------------------------------
 // Protected test route

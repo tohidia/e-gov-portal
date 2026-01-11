@@ -1,83 +1,39 @@
-// // src/api/requests.js
-// const API_URL = "http://localhost:3000/api/requests";
-
-// // 🟢 گرفتن همه درخواست‌ها
-// export const getRequests = async () => {
-//   const res = await fetch(API_URL);
-//   return res.json();
-// };
-
-// // 🟡 تأیید درخواست
-// export const approveRequest = async (id) => {
-//   const res = await fetch(`${API_URL}/${id}/approve`, { method: "PATCH" });
-//   return res.json();
-// };
-
-// // 🔴 رد درخواست
-// export const rejectRequest = async (id) => {
-//   const res = await fetch(`${API_URL}/${id}/reject`, { method: "PATCH" });
-//   return res.json();
-// };
-
-
-
-
-// import api from "./api.js"; // 📁 فایل axios که interceptor JWT دارد
+// // // src/api/requests.js
+// import api from "./api.js";
 
 // const RequestAPI = {
-//   // 🧩 دریافت همه درخواست‌ها (برای admin یا officer)
+
+//   // 🟢 دریافت همه درخواست‌ها (Admin)
 //   getAll: async () => {
-//     try {
-//       const res = await api.get("/admin/requests");
-//       return res.data;
-//     } catch (err) {
-//       console.error("Error fetching requests:", err);
-//       throw err;
-//     }
+//     const res = await api.get("/requests");   // ❗ این درست است
+//     return res.data;
 //   },
 
-//   // 🧩 دریافت یک درخواست خاص
-//   getById: async (id) => {
-//     try {
-//       const res = await api.get(`/requests/${id}`);
-//       return res.data;
-//     } catch (err) {
-//       console.error(`Error fetching request ${id}:`, err);
-//       throw err;
-//     }
+//   // 🟡 دریافت درخواست‌های خود کاربر (Citizen)
+//   getMyRequests: async () => {
+//     const res = await api.get("/requests/my-requests");  // ✔ مسیر درست
+//     return res.data;
 //   },
 
-//   // 🧩 ایجاد درخواست جدید (citizen)
-//   create: async ({ serviceId, userId, status }) => {
-//     try {
-//       const res = await api.post("/requests", { service_id: serviceId, user_id: userId, status });
-//       return res.data;
-//     } catch (err) {
-//       console.error("Error creating request:", err);
-//       throw err;
-//     }
+//   // 🟢 ایجاد درخواست
+//   create: async ({ serviceId, description }) => {
+//     const res = await api.post("/requests", {
+//       service_id: serviceId,
+//       description: description,
+//     });
+//     return res.data;
 //   },
 
-//   // 🧩 حذف یک درخواست (admin یا officer)
+//   // 🔴 حذف درخواست
 //   delete: async (id) => {
-//     try {
-//       const res = await api.delete(`/requests/${id}`);
-//       return res.data;
-//     } catch (err) {
-//       console.error(`Error deleting request ${id}:`, err);
-//       throw err;
-//     }
+//     const res = await api.delete(`/requests/${id}`);
+//     return res.data;
 //   },
 
-//   // 🧩 آپدیت وضعیت درخواست (approve/reject)
+//   // 🟣 آپدیت وضعیت
 //   updateStatus: async (id, status) => {
-//     try {
-//       const res = await api.put(`/requests/${id}/status`, { status });
-//       return res.data;
-//     } catch (err) {
-//       console.error(`Error updating status for request ${id}:`, err);
-//       throw err;
-//     }
+//     const res = await api.put(`/requests/${id}/status`, { status });
+//     return res.data;
 //   },
 // };
 
@@ -85,21 +41,24 @@
 
 
 
-
-
 import api from "./api.js";
 
 const RequestAPI = {
+  // 🟢 دریافت همه درخواست‌ها (Admin → Backend 3000)
+  // getAll: async () => {
+  //   const res = await api.get("/requests");
+  //   return res.data;
+  // },
 
-  // 🟢 دریافت همه درخواست‌ها (Admin)
   getAll: async () => {
-    const res = await api.get("/requests");   // ❗ این درست است
-    return res.data;
-  },
+  const res = await api.get("/admin/requests");
+  return res.data;
+},
 
-  // 🟡 دریافت درخواست‌های خود کاربر (Citizen)
+
+  // 🟡 دریافت درخواست‌های کاربر عادی
   getMyRequests: async () => {
-    const res = await api.get("/requests/my-requests");  // ✔ مسیر درست
+    const res = await api.get("/requests/my-requests");
     return res.data;
   },
 
@@ -107,7 +66,7 @@ const RequestAPI = {
   create: async ({ serviceId, description }) => {
     const res = await api.post("/requests", {
       service_id: serviceId,
-      description: description,
+      description,
     });
     return res.data;
   },
@@ -118,7 +77,7 @@ const RequestAPI = {
     return res.data;
   },
 
-  // 🟣 آپدیت وضعیت
+  // 🟣 آپدیت وضعیت درخواست
   updateStatus: async (id, status) => {
     const res = await api.put(`/requests/${id}/status`, { status });
     return res.data;

@@ -1,6 +1,4 @@
-
-
-// // ✅ src/components/ManageRequests.js
+// ManageRequests.js
 // import { useEffect, useState } from "react";
 // import { toast } from "react-toastify";
 // import api from "../api/api";
@@ -10,7 +8,6 @@
 //   const [loading, setLoading] = useState(true);
 //   const [searchTerm, setSearchTerm] = useState("");
 
-//   // 📦 بارگذاری همه درخواست‌ها از سرور
 //   const loadRequests = async () => {
 //     setLoading(true);
 //     try {
@@ -25,10 +22,10 @@
 //         headers: { Authorization: `Bearer ${token}` },
 //       });
 
-//       console.log("✅ API Response:", res.data);
+//       console.log("API Response:", res.data);
 //       setRequests(Array.isArray(res.data) ? res.data : []);
 //     } catch (err) {
-//       console.error("❌ Error loading requests:", err);
+//       console.error("Error loading requests:", err);
 
 //       if (err.response?.status === 403) {
 //         toast.error("Access denied. Admins only!");
@@ -48,7 +45,6 @@
 //     loadRequests();
 //   }, []);
 
-//   // ✅ تأیید درخواست
 //   const handleApprove = async (id) => {
 //     try {
 //       const token = localStorage.getItem("token");
@@ -65,7 +61,6 @@
 //     }
 //   };
 
-//   // ✅ رد درخواست
 //   const handleReject = async (id) => {
 //     try {
 //       const token = localStorage.getItem("token");
@@ -82,7 +77,6 @@
 //     }
 //   };
 
-//   // ✅ حذف درخواست
 //   const handleDelete = async (id) => {
 //     if (!window.confirm("Are you sure you want to delete this request?")) return;
 //     try {
@@ -98,7 +92,6 @@
 //     }
 //   };
 
-//   // ✅ فیلتر بر اساس جستجو
 //   const filteredRequests = requests.filter((r) =>
 //     (r.citizen_name || "").toLowerCase().includes(searchTerm.toLowerCase())
 //   );
@@ -109,7 +102,6 @@
 //         Manage Requests
 //       </h2>
 
-//       {/* Search Bar */}
 //       <input
 //         type="text"
 //         placeholder="Search by citizen name..."
@@ -118,15 +110,10 @@
 //         className="block mx-auto border border-gray-300 rounded-xl p-3 mb-6 w-2/3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
 //       />
 
-//       {/* Main Table */}
 //       {loading ? (
-//         <p className="text-center text-gray-600 animate-pulse text-lg">
-//           Loading...
-//         </p>
+//         <p className="text-center text-gray-600 animate-pulse text-lg">Loading...</p>
 //       ) : filteredRequests.length === 0 ? (
-//         <p className="text-center text-gray-500 text-lg">
-//           No requests found 😴
-//         </p>
+//         <p className="text-center text-gray-500 text-lg">No requests found 😴</p>
 //       ) : (
 //         <div className="overflow-hidden rounded-3xl shadow-xl border border-indigo-200">
 //           <table className="w-full text-center border-collapse overflow-hidden">
@@ -172,12 +159,14 @@
 //                     >
 //                       Approve
 //                     </button>
+
 //                     <button
 //                       className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow transition duration-200"
 //                       onClick={() => handleReject(r.id)}
 //                     >
 //                       Reject
 //                     </button>
+
 //                     <button
 //                       className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow transition duration-200"
 //                       onClick={() => handleDelete(r.id)}
@@ -199,20 +188,25 @@
 
 
 
-
 // ManageRequests.jsx
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../api/api";
 
 export default function ManageRequests() {
-  const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  // State Management
+  const [requests, setRequests] = useState([]);      // Array of all requests
+  const [loading, setLoading] = useState(true);      // Loading state
+  const [searchTerm, setSearchTerm] = useState("");  // Search input value
 
+  /**
+   * Fetch all requests from the backend
+   * Only accessible to admins
+   */
   const loadRequests = async () => {
     setLoading(true);
     try {
+      // Get authentication token from localStorage
       const token = localStorage.getItem("token");
       if (!token) {
         toast.error("Please login again — token missing!");
@@ -220,15 +214,19 @@ export default function ManageRequests() {
         return;
       }
 
+      // API call to get all requests (admin endpoint)
       const res = await api.get("/admin/requests", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       console.log("API Response:", res.data);
+      
+      // Ensure we have an array (safety check)
       setRequests(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error("Error loading requests:", err);
 
+      // Handle different error types
       if (err.response?.status === 403) {
         toast.error("Access denied. Admins only!");
       } else if (err.response?.status === 401) {
@@ -243,10 +241,15 @@ export default function ManageRequests() {
     }
   };
 
+  // Load requests when component mounts
   useEffect(() => {
     loadRequests();
   }, []);
 
+  /**
+   * Approve a request
+   * Changes status to "Approved"
+   */
   const handleApprove = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -256,13 +259,17 @@ export default function ManageRequests() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       toast.success("Request Approved!");
-      loadRequests();
+      loadRequests(); // Refresh the list
     } catch (err) {
       console.error(err);
       toast.error("Failed to approve request!");
     }
   };
 
+  /**
+   * Reject a request
+   * Changes status to "Rejected"
+   */
   const handleReject = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -271,14 +278,18 @@ export default function ManageRequests() {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      toast.error("Request Rejected!");
-      loadRequests();
+      toast.error("Request Rejected!"); // Using error toast for visual emphasis
+      loadRequests(); // Refresh the list
     } catch (err) {
       console.error(err);
       toast.error("Failed to reject request!");
     }
   };
 
+  /**
+   * Delete a request permanently
+   * Shows confirmation dialog before deletion
+   */
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this request?")) return;
     try {
@@ -287,23 +298,29 @@ export default function ManageRequests() {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.info("Request Deleted!");
-      loadRequests();
+      loadRequests(); // Refresh the list
     } catch (err) {
       console.error(err);
       toast.error("Failed to delete request!");
     }
   };
 
+  /**
+   * Filter requests by citizen name
+   * Case-insensitive search
+   */
   const filteredRequests = requests.filter((r) =>
     (r.citizen_name || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="p-6 bg-gradient-to-r from-blue-100 to-purple-100 rounded-3xl shadow-lg mt-8 border border-indigo-200">
+      {/* Header */}
       <h2 className="text-3xl font-bold text-center mb-6 text-indigo-700 tracking-wide">
         Manage Requests
       </h2>
 
+      {/* Search Input */}
       <input
         type="text"
         placeholder="Search by citizen name..."
@@ -312,13 +329,18 @@ export default function ManageRequests() {
         className="block mx-auto border border-gray-300 rounded-xl p-3 mb-6 w-2/3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
       />
 
+      {/* Conditional Rendering */}
       {loading ? (
+        // Loading State
         <p className="text-center text-gray-600 animate-pulse text-lg">Loading...</p>
       ) : filteredRequests.length === 0 ? (
+        // No Results
         <p className="text-center text-gray-500 text-lg">No requests found 😴</p>
       ) : (
+        // Request Table
         <div className="overflow-hidden rounded-3xl shadow-xl border border-indigo-200">
           <table className="w-full text-center border-collapse overflow-hidden">
+            {/* Table Header */}
             <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
               <tr className="text-lg">
                 <th className="py-4">ID</th>
@@ -330,6 +352,7 @@ export default function ManageRequests() {
                 <th>Actions</th>
               </tr>
             </thead>
+            {/* Table Body */}
             <tbody>
               {filteredRequests.map((r) => (
                 <tr
@@ -341,6 +364,7 @@ export default function ManageRequests() {
                   <td>{r.service_name}</td>
                   <td>{r.department_name}</td>
                   <td>${r.fee}</td>
+                  {/* Status Badge with Color Coding */}
                   <td>
                     <span
                       className={`px-3 py-1 rounded-full text-white font-semibold text-sm ${
@@ -354,6 +378,7 @@ export default function ManageRequests() {
                       {r.status}
                     </span>
                   </td>
+                  {/* Action Buttons */}
                   <td className="space-x-2 flex justify-center">
                     <button
                       className="bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow transition duration-200"
